@@ -6,13 +6,12 @@
       快手打印插件状态: {{ kwaiPrintStatus }}
       <el-button type="primary" v-if="!kwaiPrintStatus" @click="connect">连接</el-button>
       <el-button type="danger" v-else @click="close">断开</el-button>
+      <el-button @click="getPrinterList">获取打印机列表</el-button>
     </p>
     <!-- 添加重连状态提示 -->
     <p v-if="!kwaiPrintStatus && currentRetry > 0" type="warning" :closable="false">
       正在尝试第 {{ currentRetry }} 次重新连接...
     </p>
-
-    <el-button @click="getPrinterList">获取打印机列表</el-button>
   </div>
 
   <el-card style="width: 500px;">
