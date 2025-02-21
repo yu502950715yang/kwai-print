@@ -16,7 +16,7 @@
 
   <el-card>
     <el-table :data="printerList">
-      <el-table-column prop="name" label="打印机名称" width="550"/>
+      <el-table-column prop="name" label="打印机名称" width="550" />
       <el-table-column prop="oper" label="操作" width="100">
         <template #default="scope">
           <el-button type="primary" @click="print(scope.row)">打印</el-button>
@@ -38,32 +38,39 @@ defineProps({
 
 // 快手打印插件连接状态
 const kwaiPrintStatus = ref(false);
+// 存储打印机列表数据
 const printerList = ref([]);
 // 当前重试次数
 const currentRetry = ref(0)
 
+// 创建快手插件实例
 const ksWs = connectKsPrinter({
   maxRetries: 3,
   retryInterval: 3000,
 })
 
+// 监听连接事件
 ksWs.on('open', () => {
   kwaiPrintStatus.value = true;
 })
 
+// 监听关闭事件
 ksWs.on('close', () => {
   kwaiPrintStatus.value = false;
   printerList.value = [];
 })
 
+// 监听重连事件
 ksWs.on('reconnecting', (count) => {
   currentRetry.value = count
 })
 
+// 监听获取打印机列表事件
 ksWs.on('getPrinters', (data) => {
   printerList.value = data.printers
 })
 
+// 监听打印事件
 ksWs.on('print', (data) => {
   if (data.status == 'success') {
 
@@ -76,13 +83,17 @@ ksWs.on('print', (data) => {
   }
 })
 
+// 监听打印回调事件
 ksWs.on('notifyPrintResult', (data) => {
   console.log('打印完成回调')
 })
 
+// 监听错误事件
 ksWs.on('error', (error) => {
   ElMessage.error('快手打印插件连接失败')
 })
+
+// 获取打印机列表
 const getPrinterList = () => {
   if (!ksWs.isConnected()) {
     ElMessage.error('快手打印插件连接失败')
@@ -96,14 +107,17 @@ const getPrinterList = () => {
   ksWs.send(data);
 }
 
+// 连接打印插件
 const connect = () => {
   ksWs.connect()
 }
 
+// 关闭连接打印插件
 const close = () => {
   ksWs.close(true)
 }
 
+// 发送打印数据
 const print = (row) => {
   var printData = {
     "cmd": "print",
@@ -162,7 +176,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  ksWs.close()
+  ksWs.close(true)
 })
 
 
