@@ -127,6 +127,18 @@ class KsPrinter {
         this.startHeartbeat()
     }
 
+    /**
+     * 收到消息
+     * 
+     * 快手插件返回消息类型 data.cmd
+     * pong 心跳响应 心跳直接返回字符串，其余类型需要解析json串
+     * cmd = 'getPrinters' 获取打印机列表
+     * cmd = 'print' 打印
+     * cmd = 'notifyPrintResult' 打印完成通知
+     * cmd = 'getClientInfo' 获取客户端版本信息
+     * @param {返回的消息} event 
+     * @returns 
+     */
     handleMessage(event) {
         try {
             console.log('收到消息:', event.data)
