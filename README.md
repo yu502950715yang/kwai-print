@@ -1,5 +1,12 @@
-# Vue 3 + Vite
+# 快手打印组件交互demo
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+[快手打印组件文档](https://docs.qingque.cn/d/home/eZQA41D2h9LGUFaD26bC07e--?identityId=1oEFwmDizx5https:/)
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+基于websockt连接快手打印组件
+
+实现功能
+
+1. 获取打印机列表
+2. 发送打印数据
+3. 接收打印完成通知
+4. 心跳检测
