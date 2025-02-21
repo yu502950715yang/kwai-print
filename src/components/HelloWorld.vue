@@ -14,10 +14,10 @@
     </p>
   </div>
 
-  <el-card style="width: 500px;">
-    <el-table :data="printerList" style="width: 100%">
-      <el-table-column prop="name" label="打印机名称" />
-      <el-table-column prop="oper" label="操作">
+  <el-card>
+    <el-table :data="printerList">
+      <el-table-column prop="name" label="打印机名称" width="550"/>
+      <el-table-column prop="oper" label="操作" width="100">
         <template #default="scope">
           <el-button type="primary" @click="print(scope.row)">打印</el-button>
         </template>
