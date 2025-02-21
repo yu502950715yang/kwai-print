@@ -1,3 +1,5 @@
+import { debounce } from 'lodash'
+
 class KsPrinter {
 
     constructor(options = {}) {
@@ -28,6 +30,8 @@ class KsPrinter {
         this.eventHandlers = new Map()
         //定时器
         this.reconnectTimer = null
+        //防抖
+        this.debouncedSend = debounce(this._actualSend, 300);
 
         // 自动连接
         if (this.options.autoConnect) {
@@ -101,9 +105,14 @@ class KsPrinter {
     // 发送消息
     send(data) {
         if (this.isConnected()) {
-            const payload = typeof data === 'string' ? data : JSON.stringify(data)
-            this.ws.send(payload)
+            this.debouncedSend(data);
         }
+    }
+
+    // 实际发送的私有方法
+    _actualSend(data) {
+        const payload = typeof data === 'string' ? data : JSON.stringify(data);
+        this.ws.send(payload);
     }
 
     //事件监听
