@@ -1,5 +1,10 @@
 import { debounce } from 'lodash'
 
+/**
+ * 快手打印组件webstock 
+ * 快手文档地址 https://docs.qingque.cn/d/home/eZQA41D2h9LGUFaD26bC07e--?identityId=1oEFwmDizx5https:/
+ * @param {*} options
+ */
 class KsPrinter {
 
     constructor(options = {}) {
