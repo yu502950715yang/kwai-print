@@ -27,7 +27,6 @@
 </template>
 
 <script setup>
-import { da, el } from 'element-plus/es/locales.mjs';
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { connectKsPrinter } from '../utils/ksPrinter'
