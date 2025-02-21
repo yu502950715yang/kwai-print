@@ -85,7 +85,7 @@ ksWs.on('error', (error) => {
 })
 const getPrinterList = () => {
   if (!ksWs.isConnected()) {
-    console.log('快手打印插件未连接');
+    ElMessage.error('快手打印插件连接失败')
     return;
   }
   var data = {
