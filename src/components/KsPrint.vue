@@ -22,7 +22,7 @@
       </div>
     </el-card>
 
-    <el-card class="printer-card" v-loading="!kwaiPrintStatus">
+    <el-card class="printer-card">
       <template #header>
         <div class="card-header">
           <span>打印机列表</span>
@@ -209,22 +209,30 @@ onBeforeUnmount(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .title {
   text-align: center;
   margin-bottom: 30px;
-  color: #e0d7d7;
+  color: #c2c1c1;
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.status-card {
+.status-card, .printer-card {
   margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .status-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 16px;
+  background-color: #f1f1f1;
 }
 
 .status-info {
@@ -236,6 +244,8 @@ onBeforeUnmount(() => {
 .status-tag {
   min-width: 70px;
   text-align: center;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 .status-text {
@@ -256,10 +266,33 @@ onBeforeUnmount(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 16px;
+  background-color: #f1f1f1;
 }
 
 .printer-count {
   font-size: 14px;
   color: #666;
+}
+
+.el-table {
+  margin-top: 16px;
+}
+
+.el-table th, .el-table td {
+  padding: 12px;
+}
+
+.el-table th.is-leaf {
+  background-color: #f1f1f1;
+}
+
+.el-empty {
+  padding: 40px 0;
+}
+
+.el-empty__description {
+  font-size: 14px;
+  color: #999;
 }
 </style>
