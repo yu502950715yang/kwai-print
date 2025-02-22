@@ -277,10 +277,10 @@ class KsPrinter {
 }
 
 // 导出一个实例（单例模式）
-let instance = null
+let ksPrinterinstance = null
 export const connectKsPrinter = (options) => {
-    if (!instance) {
-        instance = new KsPrinter(options)
+    if (!ksPrinterinstance) {
+        ksPrinterinstance = new KsPrinter(options)
     }
-    return instance
+    return ksPrinterinstance
 }
