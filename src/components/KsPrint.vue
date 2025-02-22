@@ -1,34 +1,53 @@
 <template>
-  <h1>{{ msg }}</h1>
+  <div class="print-container">
+    <h1 class="title">{{ msg }}</h1>
 
-  <div class="card">
-    <p>
-      快手打印插件状态: {{ kwaiPrintStatus }}
-      <el-button type="primary" v-if="!kwaiPrintStatus" @click="connect">连接</el-button>
-      <el-button type="danger" v-else @click="close">断开</el-button>
-      <el-button @click="getPrinterList">获取打印机列表</el-button>
-    </p>
-    <!-- 添加重连状态提示 -->
-    <p v-if="!kwaiPrintStatus && currentRetry > 0" type="warning" :closable="false">
-      正在尝试第 {{ currentRetry }} 次重新连接...
-    </p>
+    <el-card class="status-card">
+      <div class="status-content">
+        <div class="status-info">
+          <el-tag :type="kwaiPrintStatus ? 'success' : 'danger'" class="status-tag">
+            {{ kwaiPrintStatus ? '已连接' : '未连接' }}
+          </el-tag>
+          <span class="status-text">快手打印插件状态</span>
+        </div>
+        <div class="button-group">
+          <el-button type="primary" v-if="!kwaiPrintStatus" @click="connect" :loading="currentRetry > 0">
+            {{ currentRetry > 0 ? `正在重连(${currentRetry})` : '连接' }}
+          </el-button>
+          <el-button type="danger" v-else @click="close">断开</el-button>
+          <el-button type="info" @click="getPrinterList" :disabled="!kwaiPrintStatus">
+            <el-icon><Refresh /></el-icon>刷新打印机
+          </el-button>
+        </div>
+      </div>
+    </el-card>
+
+    <el-card class="printer-card" v-loading="!kwaiPrintStatus">
+      <template #header>
+        <div class="card-header">
+          <span>打印机列表</span>
+          <span class="printer-count" v-if="printerList.length > 0">共 {{ printerList.length }} 台</span>
+        </div>
+      </template>
+      <el-empty v-if="printerList.length === 0" description="暂无打印机" />
+      <el-table v-else :data="printerList" style="width: 100%" :stripe="true" :border="true">
+        <el-table-column prop="name" label="打印机名称" min-width="200" show-overflow-tooltip />
+        <el-table-column label="操作" width="120" fixed="right" align="center">
+          <template #default="scope">
+            <el-button type="primary" size="small" @click="print(scope.row)" :disabled="!kwaiPrintStatus">
+              <el-icon><Printer /></el-icon>打印
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
   </div>
-
-  <el-card>
-    <el-table :data="printerList">
-      <el-table-column prop="name" label="打印机名称" width="550" />
-      <el-table-column prop="oper" label="操作" width="100">
-        <template #default="scope">
-          <el-button type="primary" @click="print(scope.row)">打印</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-  </el-card>
 </template>
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { Printer, Refresh } from '@element-plus/icons-vue'
 import { connectKsPrinter } from '../utils/ksPrinter'
 
 defineProps({
@@ -72,19 +91,24 @@ ksWs.on('getPrinters', (data) => {
 // 监听打印事件
 ksWs.on('print', (data) => {
   if (data.status == 'success') {
-
+    ElMessage({
+      message: '打印任务已发送',
+      type: 'success',
+    });
   } else {
     ElMessage({
       message: '打印失败: ' + data.msg,
       type: 'error',
-      plain: true,
     });
   }
 })
 
 // 监听打印回调事件
 ksWs.on('notifyPrintResult', (data) => {
-  console.log('打印完成回调')
+  ElMessage({
+    message: '打印任务已完成',
+    type: 'success',
+  });
 })
 
 // 监听错误事件
@@ -178,11 +202,64 @@ onBeforeUnmount(() => {
   ksWs.close(true)
 })
 
-
 </script>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
+.print-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #e0d7d7;
+}
+
+.status-card {
+  margin-bottom: 20px;
+}
+
+.status-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-tag {
+  min-width: 70px;
+  text-align: center;
+}
+
+.status-text {
+  font-size: 14px;
+  color: #666;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+.printer-card {
+  margin-bottom: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.printer-count {
+  font-size: 14px;
+  color: #666;
 }
 </style>
