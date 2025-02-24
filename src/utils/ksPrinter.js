@@ -10,7 +10,8 @@ class KsPrinter {
     constructor(options = {}) {
         this.defaultOptions = {
             // 快手连接地址
-            url: 'ws://localhost:16888/ks/printer',
+            // url: 'ws://localhost:16888/ks/printer',
+            url: 'wss://localhost:16889/ks/printer',
             //最大重连次数 设置为-1时 不限制重连次数
             maxRetries: 5,
             //重连间隔
